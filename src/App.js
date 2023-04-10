@@ -1,12 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
-import HelloWorld from './HelloWorld';
+import SemaphoreDemo from './SemaphoreDemo';
 
 
 function App() {
   return (
     <div className="App">
-      <HelloWorld />
+      <h1 class="display-4 text-left">Zero Knowledge based Identity Verification Layer Demo </h1>
+      <SemaphoreDemo />
     </div>
   );
 }
