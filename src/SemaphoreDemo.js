@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './bootstrap.css';
+import { Identity } from "@semaphore-protocol/identity"
+
 
 const SemaphoreDemo = () => {
   const [isGenerateIdMaterialDisabled, setGenerateIdMaterialDisabled] = useState(false);
@@ -7,30 +9,39 @@ const SemaphoreDemo = () => {
   const [isVerifyRequestDAppDisabled, setVerifyRequestDAppDisabled] = useState(true);
   const [isCheckVerificationStatusDisabled, setCheckVerificationStatusDisabled] = useState(true);
   const [textAreaValue, setTextAreaValue] = useState('Generate Identity Material Explanation');
+  
   function generateIdMaterial() {
-    alert('Generate Identity Material!');
+    alert('Step 1/4: Generate Identity Material!');
+    const { trapdoor, nullifier, commitment } = new Identity("pairwise-did");
     setGenerateIdMaterialDisabled(true);
     setAddZkProofToSemaphoreDisabled(false);
-    setTextAreaValue('Verifier Adds ZK-Proof to Semaphore Explanation');
+    setTextAreaValue(`Step 2/4: Verifier Adds ZK-Proof to Semaphore Explanation \n 
+                      Trapdoor: ${trapdoor} \n
+                      Nullifier: ${nullifier} \n
+                      Commitment: ${commitment}`);
   }
+  
   function addZkProofToSemaphore() {
     alert('Verifier Adds ZK-Proof to Semaphore!');
     setAddZkProofToSemaphoreDisabled(true);
     setVerifyRequestDAppDisabled(false);
-    setTextAreaValue('User Requests the DApp for Verification Explanation');
+    setTextAreaValue('Step 3/4: User Requests the DApp for Verification Explanation');
 
   }
+  
   function verifyRequestDApp() {
     alert('User Requests the DApp for Verification!');
     setVerifyRequestDAppDisabled(true);
     setCheckVerificationStatusDisabled(false);
-    setTextAreaValue('Check Verification Status at DApp Contract Explanation');
+    setTextAreaValue('Step 4/4: Check Verification Status at DApp Contract Explanation');
   }
+  
   function checkVerificationStatus() {
     alert('Check Verification Status at DApp Contract!');
     setCheckVerificationStatusDisabled(true);
     setTextAreaValue('Demo Complete, Refresh the page to play again!');
   }
+  
   return (
     <div>
       <button onClick={generateIdMaterial} type="button" class="btn btn-primary me-md-2" disabled={isGenerateIdMaterialDisabled} data-bs-toggle="button" autocomplete="off" aria-pressed="true">Generate Identity Material</button>
