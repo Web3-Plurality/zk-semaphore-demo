@@ -1,0 +1,77 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Work\\learning-and-development\\plurality\\PoC\\semaphore-react-app\\hello-world\\contracts\\SemaphoreIdentity.sol": {
+      "lastModificationDate": 1681152839309,
+      "contentHash": "4bad086c877b74bc93308e7c6ef3505f",
+      "sourceName": "contracts/SemaphoreIdentity.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@semaphore-protocol/contracts/interfaces/ISemaphore.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.4"
+      ],
+      "artifacts": [
+        "SemaphoreIdentity"
+      ]
+    },
+    "C:\\Work\\learning-and-development\\plurality\\PoC\\semaphore-react-app\\hello-world\\node_modules\\@semaphore-protocol\\contracts\\interfaces\\ISemaphore.sol": {
+      "lastModificationDate": 1681152700321,
+      "contentHash": "22d7f5357766d5c566a6a68a4cd033f6",
+      "sourceName": "@semaphore-protocol/contracts/interfaces/ISemaphore.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.4"
+      ],
+      "artifacts": [
+        "ISemaphore"
+      ]
+    }
+  }
+}
