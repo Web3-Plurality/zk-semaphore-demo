@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './bootstrap.css';
-import { Identity } from "@semaphore-protocol/identity"
+import { Identity } from "@semaphore-protocol/identity";
+import { ethers } from "ethers";
+import {createGroup} from './Web3Client';
 
 
 const SemaphoreDemo = () => {
@@ -9,7 +11,7 @@ const SemaphoreDemo = () => {
   const [isVerifyRequestDAppDisabled, setVerifyRequestDAppDisabled] = useState(true);
   const [isCheckVerificationStatusDisabled, setCheckVerificationStatusDisabled] = useState(true);
   const [textAreaValue, setTextAreaValue] = useState('Generate Identity Material Explanation');
-  
+
   function generateIdMaterial() {
     alert('Step 1/4: Generate Identity Material!');
     const { trapdoor, nullifier, commitment } = new Identity("pairwise-did");
@@ -21,12 +23,21 @@ const SemaphoreDemo = () => {
                       Commitment: ${commitment}`);
   }
   
-  function addZkProofToSemaphore() {
+  async function addZkProofToSemaphore() {
     alert('Verifier Adds ZK-Proof to Semaphore!');
+    createGroup().then(tx => {
+      console.log(tx);
+    }).catch(err => {
+      console.log(err);
+    });    
+
+    // add member to group
+
+    
+
     setAddZkProofToSemaphoreDisabled(true);
     setVerifyRequestDAppDisabled(false);
-    setTextAreaValue('Step 3/4: User Requests the DApp for Verification Explanation');
-
+    setTextAreaValue(`Step 3/4: User Requests the DApp for Verification Explanation`);
   }
   
   function verifyRequestDApp() {

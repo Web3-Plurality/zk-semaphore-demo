@@ -20,7 +20,8 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "4.0.3",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "web3": "^1.9.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -52,6 +53,7 @@
     "chai": "^4.3.7",
     "ethereum-waffle": "^4.0.10",
     "ethers": "^5.7.2",
-    "hardhat": "^2.13.1"
+    "hardhat": "^2.13.1",
+    "dotenv": "^14.3.2"
   }
 }
