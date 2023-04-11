@@ -1,5 +1,9 @@
 import Web3 from 'web3'
 import SemaphoreIdentity from './SemaphoreIdentity.json';
+import { Group } from "@semaphore-protocol/group"
+import { generateProof } from "@semaphore-protocol/proof"
+import { formatBytes32String } from "ethers/lib/utils"
+
 
 let selectedAccount;
 let semaphoreIdentityContract;
@@ -25,7 +29,7 @@ export const init = async () => {
     });
   }
   const web3 = new Web3(provider);
-  const networkId = await web3.eth.net.getId();
+  //const networkId = await web3.eth.net.getId();
   console.log(SemaphoreIdentity.abi);
   semaphoreIdentityContract = new web3.eth.Contract(SemaphoreIdentity.abi,'0x13646DEa8aC53df310d420646477fD32FF98DB60'); //contract address at sepolia
   console.log(semaphoreIdentityContract);
@@ -33,14 +37,58 @@ export const init = async () => {
 };
 
 
+let groupId = 13;
+const group = new Group(groupId)
+
+let merkleTreeDepth = 20;
+const signal = formatBytes32String("Hello");
+
 export const createGroup = async () => {
     if (!isInitialized) {
       await init();
     }
-    const groupId = 10;
-    const merkleTreeDepth = 20;
-    const adminAccount = selectedAccount;
     return semaphoreIdentityContract.methods
-      .createGroup(groupId,merkleTreeDepth,adminAccount)
+      .createGroup(groupId,merkleTreeDepth,selectedAccount)
       .send({from: selectedAccount})
-  }
+  };
+
+  export const addMemberToGroup = async (identityCommitment) => {
+    if (!isInitialized) {
+      await init();
+    }
+    group.addMember(identityCommitment)
+
+    return semaphoreIdentityContract.methods
+      .addMember(groupId,identityCommitment)
+      .send({from: selectedAccount})
+  };
+
+  export const removeMemberFromGroup = async (identityCommitment) => {
+    if (!isInitialized) {
+      await init();
+    }
+    group.remove(identityCommitment)
+
+    //TODO: Where to get proofPath and proofSiblings from?
+    return semaphoreIdentityContract.methods
+      .removeMember(groupId,identityCommitment, /*proofPath, proofSiblings*/)
+      .send({from: selectedAccount})
+  };
+
+  export const verifyMemberIsPartOfGroup = async (identity) => {
+    if (!isInitialized) {
+      await init();
+    }
+    //TODO: Test with merkel proof instead of group
+    const fullProof = await generateProof(identity, group, groupId, signal)
+
+    console.log(`MerkleTreeRoot: ${fullProof.merkleTreeRoot} \n
+    NullifierHash: ${fullProof.nullifierHash} \n
+    ExternalNullifier: ${fullProof.externalNullifier} \n
+    Proof: ${fullProof.proof}`)
+
+    return semaphoreIdentityContract.methods
+      .verifyProof(groupId, fullProof.merkleTreeRoot, signal, fullProof.nullifierHash, groupId, fullProof.proof)
+      .send({from: selectedAccount})
+  };
+
