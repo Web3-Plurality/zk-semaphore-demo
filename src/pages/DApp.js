@@ -3,13 +3,12 @@ import '../bootstrap.css';
 import { createGroup, addMemberToGroup, verifyMemberIsPartOfGroup, removeMemberFromGroup } from '../components/Web3Client';
 import verifiedImg from '../images/verified.png';
 import unverifiedImg from '../images/unverified.png';
-
+import mortgage from '../images/mortgage.png';
 
 let identity;
 let verifyRequestDappTx;
 
 const DApp = () => {
-
   const [isVerifyRequestDAppDisabled, setVerifyRequestDAppDisabled] = useState(false);
   const [isCheckVerificationStatusDisabled, setCheckVerificationStatusDisabled] = useState(true);
   const [textAreaValue, setTextAreaValue] = useState('');
@@ -17,9 +16,12 @@ const DApp = () => {
   const imagRef=React.createRef();
   const imageRef=useRef();
 
+  const logRef=React.createRef();
+  const logoRef=useRef();
 
   async function verifyRequestDApp() {
     imageRef.current.src = verifiedImg;
+    logoRef.current.src = mortgage;
 
     alert('User is requesting the DApp for Verification!');
     setVerifyRequestDAppDisabled(true);
@@ -56,7 +58,11 @@ const DApp = () => {
 
     return (
         <div class="text-center">
-          <h1 class="display-4 text-center">Mortgage Loans DApp</h1>
+          <br/>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: "center"}}>
+            <img src={mortgage} ref={logoRef} style={{width: '50px', height: '50px' }} />
+            <h1 class="display-4 text-center">&nbsp; Mortgage Loans DApp</h1>
+          </div>
           <br />
           <h4>Already verified yourself through our verifier? Please provide zero knowledge proof of verification</h4>
           <button onClick={verifyRequestDApp} type="button" class="btn btn-primary me-md-2" disabled={isVerifyRequestDAppDisabled} data-bs-toggle="button" autocomplete="off">Request DApp for membership verification</button>

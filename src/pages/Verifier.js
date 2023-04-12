@@ -3,13 +3,15 @@ import '../bootstrap.css';
 import { Identity } from "@semaphore-protocol/identity";
 import { createGroup, addMemberToGroup, verifyMemberIsPartOfGroup, removeMemberFromGroup } from '../components/Web3Client';
 import QRCode from "qrcode";
-
+import mortgage from '../images/mortgage.png';
 
 const Verifier = () => {
   const [text, setText] = useState("");
   const canvasRef = useRef();
   const [textAreaValue, setTextAreaValue] = useState("Results");
 
+  const logRef=React.createRef();
+  const logoRef=useRef();
 
   function generateQR() {
     const min = 1;
@@ -53,13 +55,16 @@ const Verifier = () => {
         canvasRef.current.style.height = `500px`
       },
     );
-    //generateQR();
   }, [text]);
 
 
     return (
         <div class="text-center">
-          <h1 class="display-6 text-center">Verifier for Mortgage Loans DApp</h1>
+          <br/>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: "center"}}>
+            <img src={mortgage} ref={logoRef} style={{width: '50px', height: '50px' }} />
+            <h1 class="display-6 text-center"> &nbsp; Verifier for Mortgage Loans DApp</h1>
+          </div>
           <br/>
           <h4 class="text-center">Scan the QR code to connect to verifier and provide proof details</h4>
           <br/>
