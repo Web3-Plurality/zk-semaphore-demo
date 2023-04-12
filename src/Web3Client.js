@@ -38,9 +38,8 @@ export const init = async () => {
 };
 
 
-let groupId = 1;
-const group = new Group(groupId)
-
+let groupId;
+let group;
 let merkleTreeDepth = 20;
 const signal = formatBytes32String("Hello");
 
@@ -48,6 +47,13 @@ export const createGroup = async () => {
     if (!isInitialized) {
       await init();
     }
+    const min = 1;
+    const max = 10000;
+    const rand = min + Math.floor(Math.random() * 10) * (max - min);
+    groupId = rand;
+    console.log("Creating group with id: "+groupId);
+    group = new Group(groupId);
+
     return semaphoreIdentityContract.methods
       .createGroup(groupId,merkleTreeDepth,selectedAccount)
       .send({from: selectedAccount})
