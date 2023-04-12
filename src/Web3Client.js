@@ -31,13 +31,13 @@ export const init = async () => {
   const web3 = new Web3(provider);
   //const networkId = await web3.eth.net.getId();
   console.log(SemaphoreIdentity.abi);
-  semaphoreIdentityContract = new web3.eth.Contract(SemaphoreIdentity.abi,'0x13646DEa8aC53df310d420646477fD32FF98DB60'); //contract address at sepolia
+  semaphoreIdentityContract = new web3.eth.Contract(SemaphoreIdentity.abi,'0x6E4380d5DC97a396441B4F6b5e7b1F1ad3AfD048'); //contract address at sepolia
   console.log(semaphoreIdentityContract);
   isInitialized = true;
 };
 
 
-let groupId = 13;
+let groupId = 1;
 const group = new Group(groupId)
 
 let merkleTreeDepth = 20;
@@ -67,11 +67,19 @@ export const createGroup = async () => {
     if (!isInitialized) {
       await init();
     }
-    group.remove(identityCommitment)
+    
+    const index = group.indexOf(identityCommitment) // 0
+    console.log(index);
+    const merkelProof = await group.generateMerkleProof(index);  
+    console.log(merkelProof);  
+    const proofPath = merkelProof.pathIndices;
+    console.log(proofPath);
+    const proofSiblings = merkelProof.siblings;
+    console.log(proofSiblings);
+    //group.removeMember(index);
 
-    //TODO: Where to get proofPath and proofSiblings from?
     return semaphoreIdentityContract.methods
-      .removeMember(groupId,identityCommitment, /*proofPath, proofSiblings*/)
+      .removeMember(groupId,identityCommitment, proofSiblings, proofPath)
       .send({from: selectedAccount})
   };
 
@@ -79,6 +87,7 @@ export const createGroup = async () => {
     if (!isInitialized) {
       await init();
     }
+    //group.addMember(identity.commitment);
     //TODO: Test with merkel proof instead of group
     const fullProof = await generateProof(identity, group, groupId, signal)
 
