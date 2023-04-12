@@ -10,6 +10,7 @@ let semaphoreIdentityContract;
 let isInitialized = false;
 
 export const init = async () => {
+
     let provider = window.ethereum;
 
     if (typeof provider !== 'undefined') {
@@ -31,7 +32,7 @@ export const init = async () => {
   const web3 = new Web3(provider);
   //const networkId = await web3.eth.net.getId();
   console.log(SemaphoreIdentity.abi);
-  semaphoreIdentityContract = new web3.eth.Contract(SemaphoreIdentity.abi,'0x6E4380d5DC97a396441B4F6b5e7b1F1ad3AfD048'); //contract address at sepolia
+  semaphoreIdentityContract = new web3.eth.Contract(SemaphoreIdentity.abi,process.env.REACT_APP_SEMAPHORE_IDENTITY_CONTRACT); //contract address at sepolia
   console.log(semaphoreIdentityContract);
   isInitialized = true;
 };

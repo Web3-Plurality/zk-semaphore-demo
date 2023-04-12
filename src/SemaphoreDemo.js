@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './bootstrap.css';
 import { Identity } from "@semaphore-protocol/identity";
-//import { ethers } from "ethers";
 import { createGroup, addMemberToGroup, verifyMemberIsPartOfGroup, removeMemberFromGroup } from './Web3Client';
 
 
@@ -18,7 +17,6 @@ const SemaphoreDemo = () => {
 
   function generateIdMaterial() {
     alert('User is generating the identity material');
-    //setTextAreaValue('Step 1/4: Generate Identity Material by clicking on the button!')
     identity = new Identity("pairwise-did");
     setGenerateIdMaterialDisabled(true);
     setAddZkProofToSemaphoreDisabled(false);
