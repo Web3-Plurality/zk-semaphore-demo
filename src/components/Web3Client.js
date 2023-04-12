@@ -1,5 +1,5 @@
 import Web3 from 'web3'
-import SemaphoreIdentity from './SemaphoreIdentity.json';
+import SemaphoreIdentity from '../SemaphoreIdentity.json';
 import { Group } from "@semaphore-protocol/group"
 import { generateProof } from "@semaphore-protocol/proof"
 import { formatBytes32String } from "ethers/lib/utils"
