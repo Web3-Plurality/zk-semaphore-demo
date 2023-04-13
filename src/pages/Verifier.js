@@ -18,6 +18,9 @@ const Verifier = () => {
 
   let partnerId;
   let connectionId;
+  let identity;
+  let identityCommitment;
+
   const proofTemplateId = "ecfacbf5-c75b-4867-bcf6-9258ede36525";
   function generateQR() {
 
@@ -114,23 +117,61 @@ const Verifier = () => {
                             User's revealed proof data is: \n
                             ${JSON.stringify(proofData)}\n
                             Step 3/4 Started: Creating zero-knowledge identity for this user`);
+          createUserIdentity();
         }
       }); 
       await sleep(5000);
     }
   }
 
-  function verifyProof() {
-    // receive proof from mobile app
-    // setTextAreaValue("Proof from mobile app has been received")
-    // verify proof post call
-    // get result from post call
-    // setTextAreaValue("Proof has been verified")
-    // get did from proof
-    // create identity
-    // localStorage.setItem("identity", identity);
-    // create group
-    // add member to group
+  async function createUserIdentity() {
+    identity = new Identity("pairwise-did");
+    setTextAreaValue(`Step 3/4 Complete: Your identity material has been generated against the seed "pairwise-did". Please copy the following material and keep it safe and private \n
+    Trapdoor: ${identity.trapdoor} \n
+    Nullifier: ${identity.nullifier} \n
+    Commitment: ${identity.commitment} \n \n
+    Step 4/4 Started: Adding generated identity to a group on smart contract in a privacy-preserving manner \n
+    * Verifier creates a group on the semaphore zk smart contract \n
+    * Verifier adds the public material of the generated identity to the group \n
+    * After the above two steps, user will now be able to prove his group membership in zero-knowledge way `);
+    identityCommitment = identity.commitment;
+    //localStorage.setItem("identityCommitment", identity.commitment);
+    //localStorage.setItem("identityTrapdoor", identity.trapdoor);
+    //localStorage.setItem("identityNullifier", identity.nullifier);
+    
+    //localStorage.setItem("identity", JSON.stringify(identity));
+    window.userIdentity = identity;
+    //console.log(`Identity in storage is: ${localStorage.getItem("identity")}`)
+    await sleep(5000);
+    addZkProofToSemaphore();
+  }
+
+  async function addZkProofToSemaphore() {
+    let message = `Step 4/4 In Progress: Verifier is now creating the group\n`
+    setTextAreaValue(message);
+
+    createGroup().then(tx => {
+      console.log(tx);
+      message = message + `Group creation complete. \n Verifier is now adding member to group with commitment: ${identityCommitment} \n`
+      setTextAreaValue(message);
+      // add member to group
+      addMemberToGroup(identityCommitment).then(tx => {
+        console.log(tx);
+        message = message + `\nStep 4/4 Complete: User added to group. \n User can now request the DApp for verification by submitting a zero knowledge proof of membership of a group\n` 
+        setTextAreaValue(message);
+      }).catch(err => {
+        console.log(err);
+        message = "An error occured while adding member to the group\n";
+        setTextAreaValue(message);
+      }); 
+      
+    }).catch(err => {
+      console.log(err);
+      message = "An error occured while creating a group\n";
+      setTextAreaValue(message)
+    });    
+
+    
   }
 
   useEffect(() => {

@@ -8,18 +8,19 @@ import Verifier from './pages/Verifier';
 import DApp from './pages/DApp';
 import NoPage from './pages/NoPage';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {init} from './components/Web3Client';
 
-function App() {
 
+
+function App() {
   useEffect(() => {
     init();
   }, []);
   
   return (
     <Router>
-    {/*<Navbar />*/}
+    {<Navbar />}
     <Routes>
         <Route exact path='/' exact element={<SemaphoreDemo />} />
         <Route path='/verifier' element={<Verifier/>} />

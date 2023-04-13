@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '../bootstrap.css';
-import { createGroup, addMemberToGroup, verifyMemberIsPartOfGroup, removeMemberFromGroup } from '../components/Web3Client';
+import { Identity } from "@semaphore-protocol/identity";
+import { createGroup, addMemberToGroup, verifyMemberIsPartOfGroup, removeMemberFromGroup, groupTest } from '../components/Web3Client';
 import verifiedImg from '../images/verified.png';
 import unverifiedImg from '../images/unverified.png';
 import mortgage from '../images/mortgage.png';
 
-let identity;
 let verifyRequestDappTx;
 
 const DApp = () => {
@@ -18,17 +18,11 @@ const DApp = () => {
 
   const logRef=React.createRef();
   const logoRef=useRef();
-
+  let identity;
   async function verifyRequestDApp() {
-    imageRef.current.src = verifiedImg;
-    logoRef.current.src = mortgage;
+    alert(`User is requesting the DApp for Verification with identity ${window.userIdentity}!`);
 
-    alert('User is requesting the DApp for Verification!');
-    setVerifyRequestDAppDisabled(true);
-
-    // generate proof
-    const identityString = localStorage.getItem("identity");
-    verifyMemberIsPartOfGroup(identity).then(tx => {
+    verifyMemberIsPartOfGroup(window.userIdentity).then(tx => {
       console.log(tx);
       console.log(tx.events.ProofVerified);
       verifyRequestDappTx = tx;
@@ -39,7 +33,8 @@ const DApp = () => {
       console.log(err);
       verifyRequestDappTx = err;
       setTextAreaValue(`Your zero knowledge proof is invalid. Access denied`);
-    }); 
+      imageRef.current.src=unverifiedImg;
+    });
 
   }
   
@@ -49,10 +44,18 @@ const DApp = () => {
     console.log(verifyRequestDappTx)
     try {
       if (verifyRequestDappTx.events.ProofVerified)
+      {
         setTextAreaValue('Access Granted. Your proof was valid. \n');
+        imageRef.current.src=verifiedImg;
+      }
+      else {
+        setTextAreaValue('Access Denied. You are not a part of valid participants \n');
+        imageRef.current.src=unverifiedImg;
+      }
     }
     catch(err) {
       setTextAreaValue('Access Denied. You are not a part of valid participants \n');
+      imageRef.current.src=unverifiedImg;
     }
   }
 
@@ -69,7 +72,7 @@ const DApp = () => {
           <button onClick={checkVerificationStatus} type="button" class="btn btn-primary me-md-2" disabled={isCheckVerificationStatusDisabled} data-bs-toggle="button" autocomplete="off">Check Verification Status at DApp</button>
           <br/>
 
-          <img src={unverifiedImg} ref={imageRef} style={{width: '300px', height: '300px'}} />
+          <img ref={imageRef} style={{width: '300px', height: '300px'}} />
 
           <div class="mb-3" id="textarea-readonly">
             <textarea class="form-control" id="exampleFormControlTextarea1" rows="12" value={textAreaValue} aria-label="Disabled input example" disabled readonly></textarea>
