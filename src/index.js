@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 
 import reportWebVitals from './reportWebVitals';
-import { Nav, NavLink, NavMenu } from "./components/NavbarElements";
+//import { Nav, NavLink, NavMenu } from "./components/NavbarElements";
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity";
 

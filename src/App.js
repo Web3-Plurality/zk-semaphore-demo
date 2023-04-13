@@ -1,5 +1,4 @@
 import './App.css';
-import ReactDOM from "react-dom";
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
@@ -8,7 +7,7 @@ import Verifier from './pages/Verifier';
 import DApp from './pages/DApp';
 import NoPage from './pages/NoPage';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {init} from './components/Web3Client';
 
 
@@ -22,7 +21,7 @@ function App() {
     <Router>
     {<Navbar />}
     <Routes>
-        <Route exact path='/' exact element={<SemaphoreDemo />} />
+        <Route exact path='/' exact element={<Verifier />} />
         <Route path='/verifier' element={<Verifier/>} />
         <Route path='/dapp' element={<DApp/>} />
         <Route path='/semaphore' element={<SemaphoreDemo/>} />

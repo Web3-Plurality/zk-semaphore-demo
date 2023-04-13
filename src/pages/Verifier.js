@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '../bootstrap.css';
 import { Identity } from "@semaphore-protocol/identity";
-import { createGroup, addMemberToGroup, verifyMemberIsPartOfGroup, removeMemberFromGroup } from '../components/Web3Client';
+import { createGroup, addMemberToGroup } from '../components/Web3Client';
 import QRCode from "qrcode";
 import mortgage from '../images/mortgage.png';
 import axios from 'axios'; 
@@ -13,7 +13,7 @@ const Verifier = () => {
   const canvasRef = useRef();
   const [textAreaValue, setTextAreaValue] = useState("Results");
 
-  const logRef=React.createRef();
+  //const logRef=React.createRef();
   const logoRef=useRef();
 
   let partnerId;
@@ -54,7 +54,7 @@ const Verifier = () => {
     let status;
     const url = `http://bpa.westeurope.cloudapp.azure.com:8080/api/partners/${partnerId}`;
     console.log(`Wait for invitation acceptance url: ${url}`);
-    while (status != "response")
+    while (status !== "response")
     {
       fetch(url, {
         method:'GET', 
@@ -100,7 +100,7 @@ const Verifier = () => {
     let proofData;
     const url = `http://bpa.westeurope.cloudapp.azure.com:8080/api/partners/${partnerId}/proof-exchanges/${proofTemplateId}`;
     console.log(url);
-    while (status != "verified")
+    while (status !== "verified")
     {
       fetch(url, {
         method:'GET', 
@@ -135,13 +135,7 @@ const Verifier = () => {
     * Verifier adds the public material of the generated identity to the group \n
     * After the above two steps, user will now be able to prove his group membership in zero-knowledge way `);
     identityCommitment = identity.commitment;
-    //localStorage.setItem("identityCommitment", identity.commitment);
-    //localStorage.setItem("identityTrapdoor", identity.trapdoor);
-    //localStorage.setItem("identityNullifier", identity.nullifier);
-    
-    //localStorage.setItem("identity", JSON.stringify(identity));
     window.userIdentity = identity;
-    //console.log(`Identity in storage is: ${localStorage.getItem("identity")}`)
     await sleep(5000);
     addZkProofToSemaphore();
   }
@@ -184,8 +178,8 @@ const Verifier = () => {
       (error) => error && console.error(error),
       () => {
         // fix again the CSS because lib changes it –_–
-        canvasRef.current.style.width = `500px`
-        canvasRef.current.style.height = `500px`
+        canvasRef.current.style.width = `400px`
+        canvasRef.current.style.height = `400px`
       },
     );
   }, [text]);
@@ -195,22 +189,19 @@ const Verifier = () => {
         <div class="text-center">
           <br/>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: "center"}}>
-            <img src={mortgage} ref={logoRef} style={{width: '50px', height: '50px' }} />
+            <img src={mortgage} ref={logoRef} alt={"None"} style={{width: '50px', height: '50px' }} />
             <h1 class="display-6 text-center"> &nbsp; Verifier for Mortgage Loans DApp</h1>
           </div>
           <br/>
           <h4 class="text-center">Scan the QR code to connect to verifier and provide proof details</h4>
-          <br/>
-          <p><b>Proof Required: Name & Address from Identity Card & Credit Rating>8 from Financial History </b> </p>
+          <p>Proof Required: Information from Identity Card  </p>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: "center"}}>
-            
-            <br />
             <canvas ref={canvasRef}  />
           </div>
-          <p>Connection Url: <br/>{text}</p>
+          {/*<p>Connection Url: {text}</p>*/}
           
           <button onClick={generateQR} type="button" class="btn btn-primary me-md-2" data-bs-toggle="button">Generate Proof Invitation</button>
-          <br/> <br/> <br/>
+          <br/> <br/>
           <textarea class="form-control" id="exampleFormControlTextarea1" rows="12" value={textAreaValue} aria-label="Disabled input example" disabled readonly></textarea>
         </div>
       );

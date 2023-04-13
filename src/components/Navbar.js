@@ -6,9 +6,9 @@ const Navbar = () => {
     <>
       <Nav>
         <NavMenu>
-          <NavLink to="/" activeStyle>
+          {/*<NavLink to="/" activeStyle>
             Zero Knowledge Semaphore Demo
-          </NavLink>
+  </NavLink>*/}
           <NavLink to="/verifier" activeStyle>
             Verifier
           </NavLink>

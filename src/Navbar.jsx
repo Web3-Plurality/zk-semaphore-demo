@@ -6,7 +6,7 @@ function Navbar() {
     <nav>
       <ul>
         <li>
-          <Link to="/">SemaphoreDemo</Link>
+          <Link to="/">Verifier</Link>
         </li>
         <li>
           <Link to="/verifier">Verifier</Link>
