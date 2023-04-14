@@ -13,7 +13,6 @@ const Verifier = () => {
   const canvasRef = useRef();
   const [textAreaValue, setTextAreaValue] = useState("Results");
 
-  //const logRef=React.createRef();
   const logoRef=useRef();
 
   let partnerId;
@@ -22,6 +21,7 @@ const Verifier = () => {
   let identityCommitment;
 
   const proofTemplateId = "ecfacbf5-c75b-4867-bcf6-9258ede36525";
+
   function generateQR() {
 
     axios.post('http://bpa.westeurope.cloudapp.azure.com:8080/api/invitations', {}, {
@@ -38,6 +38,7 @@ const Verifier = () => {
         connectionId = response.data.connectionId;
 
         setTextAreaValue(`Step 1/4 Started: Created connection invitation for the user. \n`);
+        
         // start looping
         waitForAcceptance();
     })
@@ -100,7 +101,7 @@ const Verifier = () => {
     let proofData;
     const url = `http://bpa.westeurope.cloudapp.azure.com:8080/api/partners/${partnerId}/proof-exchanges/${proofTemplateId}`;
     console.log(url);
-    while (status !== "verified")
+    while (status != "verified")
     {
       fetch(url, {
         method:'GET', 
@@ -168,8 +169,11 @@ const Verifier = () => {
     
   }
 
-  useEffect(() => {
+  useEffect(()=>{
+    generateQR();
+  }, []) // <-- empty dependency array, ensures that the function runs only once on load
 
+  useEffect(() => {
     QRCode.toCanvas(
       canvasRef.current,
       // QR code doesn't work with an empty string
@@ -184,7 +188,7 @@ const Verifier = () => {
     );
   }, [text]);
 
-
+    
     return (
         <div class="text-center">
           <br/>
@@ -200,7 +204,7 @@ const Verifier = () => {
           </div>
           {/*<p>Connection Url: {text}</p>*/}
           
-          <button onClick={generateQR} type="button" class="btn btn-primary me-md-2" data-bs-toggle="button">Generate Proof Invitation</button>
+          <button onClick={generateQR} type="button" class="btn btn-primary me-md-2" data-bs-toggle="button">Generate New Proof Invitation</button>
           <br/> <br/>
           <textarea class="form-control" id="exampleFormControlTextarea1" rows="12" value={textAreaValue} aria-label="Disabled input example" disabled readonly></textarea>
         </div>

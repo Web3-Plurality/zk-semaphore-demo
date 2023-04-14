@@ -15,9 +15,9 @@ window.userIdentity = new Identity();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // disabling the strict mode to ensure that useEffect runs only once
+  //https://stackoverflow.com/questions/60618844/react-hooks-useeffect-is-called-twice-even-if-an-empty-array-is-used-as-an-ar
     <App />
-  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
