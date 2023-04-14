@@ -52,6 +52,7 @@ export const createGroup = async () => {
     let rand = min + Math.floor(Math.random() * (max - min));
 
     window.groupId = rand;
+    //localStorage.setItem("groupId", groupId);
     console.log("Creating group with id: "+window.groupId);
     
     return semaphoreIdentityContract.methods

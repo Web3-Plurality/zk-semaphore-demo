@@ -164,9 +164,7 @@ const Verifier = () => {
       console.log(err);
       message = "An error occured while creating a group\n";
       setTextAreaValue(message)
-    });    
-
-    
+    });
   }
 
   useEffect(()=>{

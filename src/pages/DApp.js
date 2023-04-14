@@ -9,14 +9,10 @@ import pending from '../images/pending.png';
 let verifyRequestDappTx;
 
 const DApp = () => {
-  //const [isVerifyRequestDAppDisabled, setVerifyRequestDAppDisabled] = useState(false);
-  const [isCheckVerificationStatusDisabled, setCheckVerificationStatusDisabled] = useState(true);
   const [textAreaValue, setTextAreaValue] = useState('');
 
-  //const imagRef=React.createRef();
   const imageRef=useRef();
 
-  //const logRef=React.createRef();
   const logoRef=useRef();
 
   let message = `Step 1/2 Started: User provide zk-proof to the DApp for membership verification with identity commitment ${window.userIdentity.commitment}`;
@@ -30,7 +26,21 @@ const DApp = () => {
       verifyRequestDappTx = tx;
       message = message + `\nStep 1/2 Complete: Your zero knowledge proof is being checked against the contract. Press the second button now`; 
       setTextAreaValue(message);
-      setCheckVerificationStatusDisabled(false);
+      try {
+        if (verifyRequestDappTx.events.ProofVerified)
+        {
+          setTextAreaValue('Access Granted. Your proof was valid. \n');
+          imageRef.current.src=verifiedImg;
+        }
+        else {
+          setTextAreaValue('Access Denied. You are not a part of valid participants \n');
+          imageRef.current.src=unverifiedImg;
+        }
+      }
+      catch(err) {
+        setTextAreaValue('Access Denied. You are not a part of valid participants \n');
+        imageRef.current.src=unverifiedImg;
+      }
     }).catch(err => {
       console.log(err);
       verifyRequestDappTx = err;
@@ -39,27 +49,7 @@ const DApp = () => {
       imageRef.current.src=unverifiedImg;
     });
   }
-  
-  function checkVerificationStatus() {
-    //alert('Check Verification Status at DApp Contract!');
-    setCheckVerificationStatusDisabled(true);
-    console.log(verifyRequestDappTx)
-    try {
-      if (verifyRequestDappTx.events.ProofVerified)
-      {
-        setTextAreaValue('Access Granted. Your proof was valid. \n');
-        imageRef.current.src=verifiedImg;
-      }
-      else {
-        setTextAreaValue('Access Denied. You are not a part of valid participants \n');
-        imageRef.current.src=unverifiedImg;
-      }
-    }
-    catch(err) {
-      setTextAreaValue('Access Denied. You are not a part of valid participants \n');
-      imageRef.current.src=unverifiedImg;
-    }
-  }
+
 
     return (
         <div class="text-center">
@@ -72,7 +62,6 @@ const DApp = () => {
           <h4>Already verified yourself through our verifier? Please provide zero knowledge proof of verification</h4>
           <br/>
           <button onClick={verifyRequestDApp} type="button" class="btn btn-primary me-md-2" data-bs-toggle="button" autocomplete="off">Provide ZK-Proof to DApp for Access</button>
-          <button onClick={checkVerificationStatus} type="button" class="btn btn-primary me-md-2" disabled={isCheckVerificationStatusDisabled} data-bs-toggle="button" autocomplete="off">Check Verification Status at DApp</button>
           <br/> <br/><br/>
 
           <img ref={imageRef} src={pending} alt={"None"} style={{width: '200px', height: '200px'}} />
