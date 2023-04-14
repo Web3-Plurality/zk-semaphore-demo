@@ -47,6 +47,7 @@ export const createGroup = async () => {
     if (!isInitialized) {
       await init();
     }
+    console.log("CreateGroup Called");
     const min = 1;
     const max = 100000;
     let rand = min + Math.floor(Math.random() * (max - min));

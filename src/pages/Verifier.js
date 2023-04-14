@@ -10,6 +10,7 @@ import { encode } from "base-64";
 
 const Verifier = () => {
   const [text, setText] = useState("");
+
   const canvasRef = useRef();
   const [textAreaValue, setTextAreaValue] = useState("Results");
 
@@ -19,7 +20,7 @@ const Verifier = () => {
   let connectionId;
   let identity;
   let identityCommitment;
-
+  let message;
   const proofTemplateId = "ecfacbf5-c75b-4867-bcf6-9258ede36525";
 
   function generateQR() {
@@ -36,14 +37,15 @@ const Verifier = () => {
         setText(invitationUrl);
         partnerId = response.data.partnerId;
         connectionId = response.data.connectionId;
-
-        setTextAreaValue(`Step 1/4 Started: Created connection invitation for the user. \n`);
+        message = `Step 1/4 Started: Created connection invitation for the user.\n`;
+        setTextAreaValue(message);
         
         // start looping
         waitForAcceptance();
     })
     .catch(error => {
-      console.error('There was an error!', error);
+      message = message + 'There was an error!'+ error + '\n'; 
+      console.error(message);
     });
   }
 
@@ -68,8 +70,8 @@ const Verifier = () => {
         if (status === "response")
         {
           console.log(`connection id is: ${connectionId}`);
-          setTextAreaValue(`Step 1/4 Complete: Connection Invitation has been accepted by user. \n
-                            Step 2/4 Started: Sending proof request to user.`);
+          message = message + `Step 1/4 Complete: Connection Invitation has been accepted by user. \nStep 2/4 Started: Sending proof request to user.\n`; 
+          setTextAreaValue(message);
           requestProofPresentation();
         }
       }); 
@@ -87,7 +89,8 @@ const Verifier = () => {
       }
     }).then(response => {
         console.log(response);
-        setTextAreaValue(`Step 2/4 Waiting: Proof Request Sent. Waiting for user's proof presentation.`);
+        message = message + `Step 2/4 Waiting: Proof Request Sent. Waiting for user's proof presentation.\n`; 
+        setTextAreaValue(message);
         // start looping
         waitForProofPresentation();
     })
@@ -101,7 +104,7 @@ const Verifier = () => {
     let proofData;
     const url = `http://bpa.westeurope.cloudapp.azure.com:8080/api/partners/${partnerId}/proof-exchanges/${proofTemplateId}`;
     console.log(url);
-    while (status != "verified")
+    while (status !== "verified")
     {
       fetch(url, {
         method:'GET', 
@@ -114,10 +117,8 @@ const Verifier = () => {
         if (status === "verified")
         {
           proofData = json.proofData;
-          setTextAreaValue(`Step 2/4 Complete: Proof Request Received and Verified. \n
-                            User's revealed proof data is: \n
-                            ${JSON.stringify(proofData)}\n
-                            Step 3/4 Started: Creating zero-knowledge identity for this user`);
+          message = message + `Step 2/4 Complete: Proof Request Received and Verified. \n User's revealed proof data is: \n ${JSON.stringify(proofData)}\n Step 3/4 Started: Creating zero-knowledge identity for this user\n`; 
+          setTextAreaValue(message);
           createUserIdentity();
         }
       }); 
@@ -127,14 +128,15 @@ const Verifier = () => {
 
   async function createUserIdentity() {
     identity = new Identity("pairwise-did");
-    setTextAreaValue(`Step 3/4 Complete: Your identity material has been generated against the seed "pairwise-did". Please copy the following material and keep it safe and private \n
+    message = message + `Step 3/4 Complete: Your identity material has been generated against the seed "pairwise-did". Please copy the following material and keep it safe and private \n
     Trapdoor: ${identity.trapdoor} \n
     Nullifier: ${identity.nullifier} \n
     Commitment: ${identity.commitment} \n \n
     Step 4/4 Started: Adding generated identity to a group on smart contract in a privacy-preserving manner \n
     * Verifier creates a group on the semaphore zk smart contract \n
     * Verifier adds the public material of the generated identity to the group \n
-    * After the above two steps, user will now be able to prove his group membership in zero-knowledge way `);
+    * After the above two steps, user will now be able to prove his group membership in zero-knowledge way \n`; 
+    setTextAreaValue(message);
     identityCommitment = identity.commitment;
     window.userIdentity = identity;
     await sleep(5000);
@@ -142,27 +144,29 @@ const Verifier = () => {
   }
 
   async function addZkProofToSemaphore() {
-    let message = `Step 4/4 In Progress: Verifier is now creating the group\n`
+
+    message = message + `Step 4/4 In Progress: Verifier is now creating the group\n`
     setTextAreaValue(message);
+    console.log("Calling CreateGroup");
 
     createGroup().then(tx => {
       console.log(tx);
-      message = message + `Group creation complete. \n Verifier is now adding member to group with commitment: ${identityCommitment} \n`
+      message = message + `Group creation complete. Verifier is now adding member to group with commitment: ${identityCommitment} \n`
       setTextAreaValue(message);
       // add member to group
       addMemberToGroup(identityCommitment).then(tx => {
         console.log(tx);
-        message = message + `\nStep 4/4 Complete: User added to group. \n User can now request the DApp for verification by submitting a zero knowledge proof of membership of a group\n` 
+        message = message + `Step 4/4 Complete: User added to group. \n User can now request the DApp for verification by submitting a zero knowledge proof of membership of a group\n` 
         setTextAreaValue(message);
       }).catch(err => {
         console.log(err);
-        message = "An error occured while adding member to the group\n";
+        message = message + "An error occured while adding member to the group\n";
         setTextAreaValue(message);
       }); 
       
     }).catch(err => {
       console.log(err);
-      message = "An error occured while creating a group\n";
+      message = message + "An error occured while creating a group\n";
       setTextAreaValue(message)
     });
   }
@@ -204,7 +208,7 @@ const Verifier = () => {
           
           <button onClick={generateQR} type="button" class="btn btn-primary me-md-2" data-bs-toggle="button">Generate New Proof Invitation</button>
           <br/> <br/>
-          <textarea class="form-control" id="exampleFormControlTextarea1" rows="12" value={textAreaValue} aria-label="Disabled input example" disabled readonly></textarea>
+          <textarea class="form-control" rows="12" value={textAreaValue} aria-label="Disabled input example" disabled readonly></textarea>
         </div>
       );
 }
