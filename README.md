@@ -1,6 +1,13 @@
 # Plurality
 
-Plurality is the identity-lego-building-block for dapp creators that lets them identify their users without using any third-party KYC provider or other middlemen.
+| Plurality is the first identity-lego-building-block for dapp creators that lets them identify their users without using any third-party KYC provider or other middlemen. |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+
+Plurality supercharges DApps by helping them to:
+
+1. Setup a verification mechanism tied to off-chain credentials in a few clicks
+2. Use ZK-Proofs to prove on-chain that a user has been verified
+3. Verify Personal Identifiable Information of user off-chain and never publish any sensitive information on chain - not even the blockchain address!
 
 ## Adding zero knowledge verification proofs on chain after verifying through Verifiable Credentials (VCs)
 
