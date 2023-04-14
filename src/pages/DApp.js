@@ -15,7 +15,7 @@ const DApp = () => {
 
   const logoRef=useRef();
 
-  let message = `Step 1/2 Started: User provide zk-proof to the DApp for membership verification with identity commitment ${window.userIdentity.commitment}`;
+  let message = `Verification Started: User provide zk-proof to the DApp for membership verification with identity commitment ${window.userIdentity.commitment}\n`;
 
   async function verifyRequestDApp() {
     setTextAreaValue(message);
@@ -24,27 +24,30 @@ const DApp = () => {
       console.log(tx);
       console.log(tx.events.ProofVerified);
       verifyRequestDappTx = tx;
-      message = message + `\nStep 1/2 Complete: Your zero knowledge proof is being checked against the contract. Press the second button now`; 
+      message = message + `Verification In Progress: Your zero knowledge proof is being checked against the contract.\n`; 
       setTextAreaValue(message);
       try {
         if (verifyRequestDappTx.events.ProofVerified)
         {
-          setTextAreaValue('Access Granted. Your proof was valid. \n');
+          message = message + 'Verification Complete. Access GRANTED. Your proof was valid. \n'; 
+          setTextAreaValue(message);
           imageRef.current.src=verifiedImg;
         }
         else {
-          setTextAreaValue('Access Denied. You are not a part of valid participants \n');
+          message = message + 'Verification Complete. Access DENIED. You are not a part of valid participants \n' 
+          setTextAreaValue(message);
           imageRef.current.src=unverifiedImg;
         }
       }
       catch(err) {
-        setTextAreaValue('Access Denied. You are not a part of valid participants \n');
+        message = message + 'Verification Complete. Access DENIED. You are not a part of valid participants \n' 
+        setTextAreaValue(message);
         imageRef.current.src=unverifiedImg;
       }
     }).catch(err => {
       console.log(err);
       verifyRequestDappTx = err;
-      message = message + `Your zero knowledge proof is invalid. Access denied`; 
+      message = message + `Your zero knowledge proof is invalid. Access DENIED`; 
       setTextAreaValue(message);
       imageRef.current.src=unverifiedImg;
     });

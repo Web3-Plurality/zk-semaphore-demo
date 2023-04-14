@@ -7,8 +7,8 @@
     </h1>
 </p>
 
-| Plurality is the first identity-lego-building-block for dapp creators that lets them identify their users without using any third-party KYC provider or other middlemen. |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Plurality is the first identity-lego-building-block for dapp creators that lets them identify their users without using any third-party KYC provider or other middlemen. It encourages modular application design, allowing dApp developers to choose and customize the on-chain and off-chain components they need. |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 Plurality supercharges DApps by helping them to:
 

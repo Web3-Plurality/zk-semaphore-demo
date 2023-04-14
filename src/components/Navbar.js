@@ -15,6 +15,9 @@ const Navbar = () => {
           <NavLink to="/dapp" activeStyle>
             DApp
           </NavLink>
+          <NavLink to="/revocation" activeStyle>
+            Revocation
+          </NavLink>
         </NavMenu>
       </Nav>
     </>

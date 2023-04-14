@@ -14,6 +14,9 @@ function Navbar() {
         <li>
           <Link to="/dapp">DApp</Link>
         </li>
+        <li>
+          <Link to="/revocation">Revocation</Link>
+        </li>
       </ul>
     </nav>
   );
