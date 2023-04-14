@@ -1,4 +1,11 @@
-# Plurality
+<p align="center">
+    <h1 align="center">
+      <picture>
+        <img width="40" alt="Plurality icon." src="https://github.com/Web3-Plurality/zk-identity-verification/blob/main/src/images/plurality.png">
+      </picture>
+      Plurality
+    </h1>
+</p>
 
 | Plurality is the first identity-lego-building-block for dapp creators that lets them identify their users without using any third-party KYC provider or other middlemen. |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
