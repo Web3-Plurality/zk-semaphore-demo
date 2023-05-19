@@ -15,23 +15,16 @@
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",
     "@zk-kit/incremental-merkle-tree.sol": "1.3.3",
-    "axios": "^1.3.5",
-    "base-64": "^1.0.0",
     "dotenv": "^16.0.3",
-    "qrcode": "^1.5.1",
     "react": "^18.2.0",
-    "react-bootstrap": "^2.7.3",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.8.0",
-    "react-router-dom": "^6.10.0",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "4.0.3",
-    "state-pool": "^0.9.0",
-    "styled-components": "^5.3.9",
     "web-vitals": "^2.1.4",
     "web3": "^1.9.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -58,9 +51,9 @@
     "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@nomiclabs/hardhat-waffle": "^2.0.5",
     "chai": "^4.3.7",
-    "dotenv": "^14.3.2",
     "ethereum-waffle": "^4.0.10",
     "ethers": "^5.7.2",
-    "hardhat": "^2.13.1"
+    "hardhat": "^2.13.1",
+    "dotenv": "^14.3.2"
   }
 }
